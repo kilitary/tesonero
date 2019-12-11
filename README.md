@@ -1,1 +1,2 @@
-паблик папка: public
+1) composer install
+2) паблик папка: public

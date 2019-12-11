@@ -69,7 +69,7 @@
     <div class="row">
         @for($i = 0; $i<50;$i++)
             <span style="border:1px solid black;padding:4px"><a
-                    href="?sort={{ request()->get('sort') }}&sortdir={{ request()->get('sortdir') }}&page={{ $i }}">{{ $i+1 }}</a></span>
+                    href="@if(request()->has('sort'))?sort={{ request()->get('sort') }}@else ? @endif&@if(request()->has('sortdir'))sortdir={{ request()->get('sortdir') }}@endif&page={{ $i }}">{{ $i+1 }}</a></span>
         @endfor
     </div>
     <table border="1px">
@@ -104,7 +104,7 @@
     </table>
     @for($i = 0; $i<50;$i++)
         <span style="border:1px solid black;padding:4px"><a
-                href="?sort={{ request()->get('sort') }}&sortdir={{ request()->get('sortdir') }}&page={{ $i }}">{{ $i+1 }}</a></span>
+                href="@if(request()->has('sort'))?sort={{ request()->get('sort') }}@else ? @endif&@if(request()->has('sortdir'))sortdir={{ request()->get('sortdir') }}@endif&page={{ $i }}">{{ $i+1 }}</a></span>
     @endfor
 </div>
 </body>

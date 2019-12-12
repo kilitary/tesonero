@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 
 class Controller extends BaseController
 {
@@ -15,23 +16,24 @@ class Controller extends BaseController
 
     public function index(Request $request)
     {
-        if($request->has('page')) {
+        if ($request->has('page')) {
             $from = $request->get('page');
-            if($from == 0) {
+            if ($from != 1) {
+                $from *= 20;
+            } else {
                 $from = 1;
             }
-            $from *= 20;
         } else {
             $from = 1;
         }
 
-        if($request->has('sort')) {
+        if ($request->has('sort')) {
             $sort = $request->get('sort');
         } else {
             $sort = 'Наименование';
         }
 
-        if($request->has('sortdir')) {
+        if ($request->has('sortdir')) {
             $sortdir = $request->get('sortdir');
         } else {
             $sortdir = 'asc';
@@ -43,6 +45,13 @@ class Controller extends BaseController
             ->authenticateWith('test', 'test')
             ->send();
 
-        return view('index', ['citys' => $response->body->data]);
+        $pagination = new \Illuminate\Pagination\LengthAwarePaginator(null, 980, 20, $request->get('page'), ['query' => $request->all()]);
+
+        if($request->ajax()) {
+            $view = 'content';
+        } else {
+            $view = 'index';
+        }
+        return view($view, ['citys' => $response->body->data, 'pagination' => $pagination]);
     }
 }
